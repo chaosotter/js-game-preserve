@@ -1,8 +1,8 @@
 var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
-const NAME    = 'Acey Ducey';
-const VERSION = '1.0.0';
+const TITLE   = 'Acey Ducey';
+const VERSION = '1.0.1';
 
 /**
  * Translates a card in the range [0, 51] to a user-readable string.
@@ -67,7 +67,7 @@ function value(card) {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, NAME, VERSION);
+T$.hello(SOURCE, TITLE, VERSION);
 instructions();
 
 let cash = 100;
