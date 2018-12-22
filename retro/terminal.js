@@ -26,6 +26,8 @@ const embeddedCodes = {
   'R': () => term.fg(module.exports.RED),
   'G': () => term.fg(module.exports.GREEN),
   'Y': () => term.fg(module.exports.YELLOW),
+  'B': () => term.fg(module.exports.BLUE),
+  'M': () => term.fg(module.exports.MAGENTA),
   'C': () => term.fg(module.exports.CYAN),
   'W': () => term.fg(module.exports.WHITE),
 };
