@@ -64,5 +64,28 @@ module.exports = {
       ret.push(i);
     }
     return ret;
-  }
+  },
+  
+  /**
+   * Reduces the given array using |base| and iterative application of |fn|.
+   * @param {function} fn The function for updating the accumulator.
+   * @param {object} base Initial value of the accumulator.
+   * @returns {object} Final value of the accumulator.
+   */
+   reduce(fn, base, ls) {
+     let acc = base;
+     for (let x of ls) {
+       acc = fn(acc, x);
+     }
+     return acc;
+   },
+  
+  /**
+   * Returns the sum of all items in the array.
+   * @param {Array.<number>} The array to sum.
+   * @returns {number} The sum.
+   */
+  sum(ls) {
+    return module.exports.reduce((acc, x) => acc + x, 0, ls);
+  },
 };
