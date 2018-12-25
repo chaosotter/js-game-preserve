@@ -1,8 +1,9 @@
 var T$ = require('../../../retro/terminal.js');
+var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Acey Ducey';
-const VERSION = '1.0.1';
+const VERSION = '1.0.3';
 
 /**
  * Translates a card in the range [0, 51] to a user-readable string.
@@ -34,27 +35,17 @@ either bored or broke.
  * @returns {Array.<number>}
  */
 function pickCards() {
-  let a = rand(0, 51);
-  let b = rand(0, 51);
-  let c = rand(0, 51);
+  let a = U$.rand(0, 51);
+  let b = U$.rand(0, 51);
+  let c = U$.rand(0, 51);
   while ((a === b) || (a === c) || (b === c)) {
-    b = rand(0, 51);
-    c = rand(0, 51);
+    b = U$.rand(0, 51);
+    c = U$.rand(0, 51);
   }
   if (value(a) > value(b)) {
     [a, b] = [b, a];
   }
   return [a, b, c];
-}
-
-/**
- * Selects a random integer in the range [a, b].
- * @param {number} a The minimum value.
- * @param {number} b The maximum value.
- * @returns {number}
- */
-function rand(a, b) {
-  return a + Math.floor((b - a + 1) * Math.random());
 }
 
 /**

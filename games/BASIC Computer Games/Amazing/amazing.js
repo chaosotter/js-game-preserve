@@ -1,8 +1,9 @@
 var T$ = require('../../../retro/terminal.js');
+var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Amazing Maze Generator';
-const VERSION = '1.0.0';
+const VERSION = '1.0.2';
 
 const WALL  = 0;
 const SPACE = 1;
@@ -70,7 +71,7 @@ function generateMaze() {
     }
 
     if (okay.length > 0) {
-      const dir = okay[Math.floor(Math.random() * okay.length)];
+      const dir = okay[U$.rand(0, okay.length - 1)];
       dig(row, col, dir);
       row += 2 * DIR[dir][0];
       col += 2 * DIR[dir][1];

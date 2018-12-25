@@ -1,8 +1,9 @@
 var T$ = require('../../../retro/terminal.js');
+var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Awari';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const HUMAN    = 0;
 const COMPUTER = 1;
@@ -243,7 +244,7 @@ class Board {
   display() {
     const fmt = [];
     for (let i = 0; i < 14; i++) {
-      fmt.push(('  ' + this.pits[i]).slice(-2));
+      fmt.push(U$.pad(this.pits[i], 2));
     }
 
     T$.println();
@@ -271,7 +272,7 @@ class Board {
   hasMove() {
     for (let i = 1; i <= 6; i++) {
       if (this.pits[HOME[this.turn] - i] > 0) {
-        return true
+        return true;
       }
     }
     return false;

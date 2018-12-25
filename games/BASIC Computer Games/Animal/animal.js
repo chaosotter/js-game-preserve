@@ -2,7 +2,7 @@ var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Animal Guessing Game';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 /**
  * Asks the current question, also allowing the user to enter "list" for the
