@@ -67,6 +67,20 @@ const term = {
   /** Resets foreground and blackground colors. */
   reset() { this.output(`${CSI}0m`) },
 
+  /** Clears the screen.*/
+  clear() { this.output(`${CSI}2J`) },
+
+  /** Cursor control. */
+  xy:    (x, y)  => this.output(`${CSI}${y+1};${x+1}H`),
+  home:  ()      => this.output(`${CSI}1;1H`),
+  up:    (n = 1) => this.output(`${CSI}${n}A`),
+  down:  (n = 1) => this.output(`${CSI}${n}B`),
+  left:  (n = 1) => this.output(`${CSI}${n}D`),
+  right: (n = 1) => this.output(`${CSI}${n}C`),
+  
+  /** Reverse video. */
+  reverse: (state) => this.output(`${CSI}${state ? '7' : '27'}m`),
+
   /**
    * Low-level output function.  This processes the input character by
    * character, interpreting embedded color codes such as {W} using the
@@ -91,7 +105,7 @@ const term = {
           default:
             code += ch;
         }
-      } else if (ch == '{') {
+      } else if (ch === '{') {
         inCode = true;
       } else {
         process.stdout.write(ch);
@@ -146,21 +160,21 @@ module.exports = {
   /** Resets to default colors. */
   reset: () => term.reset(),
 
-  /** Clears the screen.  TODO: Move into term. */
-  clear: () => term.output(`${CSI}2J`),
+  /** Clears the screen. */
+  clear: () => term.clear(),
 
-  /** Cursor control.  TODO: Move into term. */
-  xy:    (x, y)  => term.output(`${CSI}${y+1};${x+1}H`),
-  yx:    (y, x)  => term.output(`${CSI}${y+1};${x+1}H`),
-  home:  ()      => term.output(`${CSI}1;1H`),
-  up:    (n = 1) => term.output(`${CSI}${n}A`),
-  down:  (n = 1) => term.output(`${CSI}${n}B`),
-  left:  (n = 1) => term.output(`${CSI}${n}D`),
-  right: (n = 1) => term.output(`${CSI}${n}C`),
+  /** Cursor control. */
+  xy:    (x, y)  => term.xy(x, y),
+  yx:    (y, x)  => term.xy(x, y),
+  home:  ()      => term.home(),
+  up:    (n = 1) => term.up(n),
+  down:  (n = 1) => term.down(n),
+  left:  (n = 1) => term.left(n),
+  right: (n = 1) => term.right(n),
   
-  /** Inverse video.  TODO: Move into term. */
-  reverse:    () => term.output(`${CSI}7m`),
-  reverseOff: () => term.output(`${CSI}27m`),
+  /** Reverse video. */
+  reverse:    () => term.reverse(true),
+  reverseOff: () => term.reverse(false),
 
   /**
    * Prints a series of strings without a newline.
@@ -215,7 +229,7 @@ module.exports = {
    */
   inputYN(prompt = '') {
     let value = '';
-    while ((value !== 'y') && (value !== 'n')) {
+    while (value !== 'y' && value !== 'n') {
       value = this.input(prompt);
     }
     return (value === 'y');
@@ -230,7 +244,7 @@ module.exports = {
    */
   inputNumber(prompt, min, max) {
     let value = min - 1;
-    while ((value < min) || (value > max)) {
+    while (value < min || value > max) {
       value = Number(this.input(prompt));
     }
     return value;
