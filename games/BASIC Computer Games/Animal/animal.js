@@ -55,10 +55,10 @@ function listAnimals(current) {
  * @param {Object} old The tree node for the previous animal.
  */
 function newQuestion(old) {
-  const newAnimal = T$.input('What was your animal?');
+  const newAnimal = T$.input('What was your animal? ');
   const question = T$.input(`Enter a yes-or-no question that would ` +
                             `distinguish a ${old['a']} and a ${newAnimal}:\n`);
-  const answer = askQuestion(`What's the answer for a ${newAnimal}?`);
+  const answer = askQuestion(`What's the answer for a ${newAnimal}? `);
 
   old['q'] = question;
   if (answer === 'y') {
@@ -88,7 +88,7 @@ while (true) {
     current = current[answer];
   }
 
-  let answer = askQuestion(`Is it a ${current['a']}?`);
+  let answer = askQuestion(`Is it a ${current['a']}? `);
   if (answer === 'y') {
     T$.println('{G}Huzzah!  My powers of deduction win again!');
   } else {

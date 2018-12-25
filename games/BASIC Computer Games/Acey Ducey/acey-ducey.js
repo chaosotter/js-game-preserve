@@ -76,7 +76,7 @@ while (cash > 0) {
 
   T$.println(`You now have {G}$${cash}{_}.`);
   T$.println(`Here are your cards:  ${cardString(a)}  ${cardString(b)}`);
-  let bet = T$.inputNumber('How much do you bet?', 0, cash);
+  let bet = T$.inputNumber('How much do you bet? ', 0, cash);
 
   if (bet === 0) {
     T$.println(`{Y}Chicken!`);

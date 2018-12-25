@@ -99,7 +99,7 @@ function generateMaze() {
  * @param {number} max The maximum acceptable size.
  */
 function getSize(msg, min, max) {
-  const prompt = `Enter ${msg} (${min}-${max}):`;
+  const prompt = `Enter ${msg} (${min}-${max}): `;
   return T$.inputNumber(prompt, min, max);
 }
 
@@ -119,7 +119,7 @@ function printMaze() {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       if (maze[row][col] == WALL) {
-        T$.print('#');
+        T$.print('{V} {v}');
       } else {
         T$.print(' ');
       }

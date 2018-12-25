@@ -30,6 +30,8 @@ const embeddedCodes = {
   'M': () => term.fg(module.exports.MAGENTA),
   'C': () => term.fg(module.exports.CYAN),
   'W': () => term.fg(module.exports.WHITE),
+  'V': () => module.exports.reverse(),
+  'v': () => module.exports.reverseOff(),
 };
 
 /**
@@ -147,7 +149,7 @@ module.exports = {
   /** Clears the screen.  TODO: Move into term. */
   clear: () => term.output(`${CSI}2J`),
 
-  // Cursor control.  TODO: Move into term. */
+  /** Cursor control.  TODO: Move into term. */
   xy:    (x, y)  => term.output(`${CSI}${y+1};${x+1}H`),
   yx:    (y, x)  => term.output(`${CSI}${y+1};${x+1}H`),
   home:  ()      => term.output(`${CSI}1;1H`),
@@ -155,6 +157,10 @@ module.exports = {
   down:  (n = 1) => term.output(`${CSI}${n}B`),
   left:  (n = 1) => term.output(`${CSI}${n}D`),
   right: (n = 1) => term.output(`${CSI}${n}C`),
+  
+  /** Inverse video.  TODO: Move into term. */
+  reverse:    () => term.output(`${CSI}7m`),
+  reverseOff: () => term.output(`${CSI}27m`),
 
   /**
    * Prints a series of strings without a newline.
@@ -199,7 +205,7 @@ module.exports = {
    * @param {string=} prompt The prompt.
    */
   input(prompt = '') {
-    return term.input(`{_}${prompt}{Y} `);
+    return term.input(`{_}${prompt}{Y}`);
   },
 
   /**
