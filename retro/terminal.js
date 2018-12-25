@@ -30,16 +30,16 @@ const embeddedCodes = {
   'M': () => term.fg(module.exports.MAGENTA),
   'C': () => term.fg(module.exports.CYAN),
   'W': () => term.fg(module.exports.WHITE),
-  'V': () => module.exports.reverse(),
-  'v': () => module.exports.reverseOff(),
+  'V': () => term.reverse(true),
+  'v': () => term.reverse(false),
 };
 
 /**
- * Abstract data type for the terminal.  This version works only in console
- * mode and supports color, cursor control, and line-based input.
- * @type {Object}
+ * Console-based implementation of the terminal for use at the command line.
  */
-const term = {
+class ConsoleTerm {
+  constructor() {}
+
   /**
    * Sets the foreground color.
    * @param {number} Foreground color to use.
@@ -52,7 +52,7 @@ const term = {
         this.output(`${CSI}3${color};22m`);
       }
     }
-  },
+  }
   
   /**
    * Sets the background color.
@@ -62,24 +62,24 @@ const term = {
     if (color !== module.exports.NONE) {
       this.output(`${CSI}4${color % 8}m`);
     }
-  },
+  }
 
   /** Resets foreground and blackground colors. */
-  reset() { this.output(`${CSI}0m`) },
+  reset() { this.output(`${CSI}0m`) }
 
   /** Clears the screen.*/
-  clear() { this.output(`${CSI}2J`) },
+  clear() { this.output(`${CSI}2J`) }
 
   /** Cursor control. */
-  xy:    (x, y)  => this.output(`${CSI}${y+1};${x+1}H`),
-  home:  ()      => this.output(`${CSI}1;1H`),
-  up:    (n = 1) => this.output(`${CSI}${n}A`),
-  down:  (n = 1) => this.output(`${CSI}${n}B`),
-  left:  (n = 1) => this.output(`${CSI}${n}D`),
-  right: (n = 1) => this.output(`${CSI}${n}C`),
+  xy(x, y)     { this.output(`${CSI}${y+1};${x+1}H`) }
+  home()       { this.output(`${CSI}1;1H`) }
+  up(n = 1)    { this.output(`${CSI}${n}A`) }
+  down(n = 1)  { this.output(`${CSI}${n}B`) }
+  left(n = 1)  { this.output(`${CSI}${n}D`) }
+  right(n = 1) { this.output(`${CSI}${n}C`) }
   
   /** Reverse video. */
-  reverse: (state) => this.output(`${CSI}${state ? '7' : '27'}m`),
+  reverse(state) { this.output(`${CSI}${state ? '7' : '27'}m`) }
 
   /**
    * Low-level output function.  This processes the input character by
@@ -111,7 +111,7 @@ const term = {
         process.stdout.write(ch);
       }
     }
-  },
+  }
 
   /**
    * Reads a full of line of input, with an optional prompt.
@@ -121,8 +121,10 @@ const term = {
   input(prompt = '') {
     this.output(prompt);
     return readline.question('');
-  },
-};
+  }
+}
+
+let term = new ConsoleTerm();
 
 //------------------------------------------------------------------------------
 
