@@ -14,6 +14,7 @@
         let source = driver.getParam('source');
         let title = driver.getParam('title');
         let file = driver.getParam('file');
+        document.title = title;
         require(`./games/${source}/${title}/${file}.js`);
       }
     </script>
