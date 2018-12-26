@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Battle';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const SIZE   = 6;
 const SHIPS  = [2, 2, 3, 3, 4, 4];
@@ -135,43 +135,47 @@ class Board {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-let board = new Board(SIZE);
+  let board = new Board(SIZE);
 
-if (T$.inputYN('Show coded map (good for younger players)? ')) {
-  board.printBoard();
-}
-T$.println();
+  if (await T$.inputYN('Show coded map (good for younger players)? ')) {
+    board.printBoard();
+  }
+  T$.println();
 
-let hit  = 0;
-let miss = 0;
+  let hit  = 0;
+  let miss = 0;
 
-while (!board.done()) {
-  let row = T$.inputNumber(`Enter row to bomb (1-${SIZE}): `, 1, SIZE) - 1;
-  let col = T$.inputNumber(`Enter column to bomb (1-${SIZE}): `, 1, SIZE) - 1;
+  while (!board.done()) {
+    let row = await T$.inputNumber(`Enter row to bomb (1-${SIZE}): `, 1, SIZE) - 1;
+    let col = await T$.inputNumber(`Enter column to bomb (1-${SIZE}): `, 1, SIZE) - 1;
 
-  let ship = board.bomb(row, col);
-  if (ship === 0) {
-    T$.println('{R}Splash!  Try again.');
-    miss++;
-  } else {
-    T$.println(`{G}A direct hit on ship #${ship}!`);
-    hit++;
-    if (board.sunk(ship)) {
-      T$.println('{W}And you sank it!  Hurrah for the good guys!');
-      board.printLosses();
+    let ship = board.bomb(row, col);
+    if (ship === 0) {
+      T$.println('{R}Splash!  Try again.');
+      miss++;
+    } else {
+      T$.println(`{G}A direct hit on ship #${ship}!`);
+      hit++;
+      if (board.sunk(ship)) {
+        T$.println('{W}And you sank it!  Hurrah for the good guys!');
+        board.printLosses();
+      }
+    }
+
+    T$.print('{_}\nYour current splash-to-hit ratio is {C}');
+    if (hit === 0) {
+      T$.println(`0{_}`);
+    } else {
+      T$.println(`${miss / hit}{_}`);
     }
   }
 
-  T$.print('{_}\nYour current splash-to-hit ratio is {C}');
-  if (hit === 0) {
-    T$.println(`0{_}`);
-  } else {
-    T$.println(`${miss / hit}{_}`);
-  }
+  T$.println(`{W}\nVICTORY!  You have wiped out the computer's fleet!`);
+  T$.println('{_}');
 }
 
-T$.println(`{W}\nVICTORY!  You have wiped out the computer's fleet!`);
-T$.println('{_}');
+main();
