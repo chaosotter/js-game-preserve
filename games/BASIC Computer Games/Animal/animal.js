@@ -2,7 +2,7 @@ var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Animal Guessing Game';
-const VERSION = '1.0.1';
+const VERSION = '1.0.2';
 
 /**
  * Asks the current question, also allowing the user to enter "list" for the
@@ -10,10 +10,10 @@ const VERSION = '1.0.1';
  * @param {string} question The question to ask.
  * @returns {string} Either "y" or "n".
  */
-function askQuestion(question) {
+async function askQuestion(question) {
   let answer = '';
   while (answer !== 'y' && answer !== 'n') {
-    answer = T$.input(question);
+    answer = await T$.input(`${question} `);
     if (answer === 'list') {
       T$.println('{M}');
       listAnimals(root);
@@ -22,7 +22,7 @@ function askQuestion(question) {
       answer = answer[0];
     }
   }
-  return answer
+  return answer;
 }
 
 /** Displays instructions. */
@@ -54,11 +54,12 @@ function listAnimals(current) {
  * Asks the user to construct a new question.
  * @param {Object} old The tree node for the previous animal.
  */
-function newQuestion(old) {
-  const newAnimal = T$.input('What was your animal? ');
-  const question = T$.input(`Enter a yes-or-no question that would ` +
-                            `distinguish a ${old['a']} and a ${newAnimal}:\n`);
-  const answer = askQuestion(`What's the answer for a ${newAnimal}? `);
+async function newQuestion(old) {
+  const newAnimal = await T$.input('What was your animal? ');
+  const question = await T$.input(
+      `Enter a yes-or-no question that would ` +
+      `distinguish a ${old['a']} and a ${newAnimal}:\n`);
+  const answer = await askQuestion(`What's the answer for a ${newAnimal}?`);
 
   old['q'] = question;
   if (answer === 'y') {
@@ -73,28 +74,32 @@ function newQuestion(old) {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-let root = {'q': 'Does it swim?', 'y': {'a': 'fish'}, 'n': {'a': 'bird'}};
+  let root = {'q': 'Does it swim?', 'y': {'a': 'fish'}, 'n': {'a': 'bird'}};
 
-while (true) {
-  T$.println('{W}Time to think of an animal!');
-  T$.println('{_}');
-  let current = root;
+  while (true) {
+    T$.println('{W}Time to think of an animal!');
+    T$.println('{_}');
+    let current = root;
 
-  while ('q' in current) {
-    let answer = askQuestion(current['q']);
-    current = current[answer];
-  }
+    while ('q' in current) {
+      let answer = await askQuestion(current['q']);
+      current = current[answer];
+    }
 
-  let answer = askQuestion(`Is it a ${current['a']}? `);
-  if (answer === 'y') {
-    T$.println('{G}Huzzah!  My powers of deduction win again!');
-  } else {
-    T$.println(`{B}Hmmm... I guess I don't know this critter.`);
-    newQuestion(current);
-  }
+    let answer = await askQuestion(`Is it a ${current['a']}?`);
+    if (answer === 'y') {
+      T$.println('{G}Huzzah!  My powers of deduction win again!');
+    } else {
+      T$.println(`{B}Hmmm... I guess I don't know this critter.`);
+      await newQuestion(current);
+    }
   
-  T$.println();
+    T$.println();
+  }
 }
+
+main();
