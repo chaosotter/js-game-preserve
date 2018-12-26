@@ -58,31 +58,36 @@ function value(card) {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-let cash = 100;
-while (cash > 0) {
-  let [a, b, c] = pickCards();
+  let cash = 100;
+  while (cash > 0) {
+    let [a, b, c] = pickCards();
 
-  T$.println(`You now have {G}$${cash}{_}.`);
-  T$.println(`Here are your cards:  ${cardString(a)}  ${cardString(b)}`);
-  let bet = T$.inputNumber('How much do you bet? ', 0, cash);
+    T$.println(`You now have {G}$${cash}{_}.`);
+    T$.println(`Here are your cards:  ${cardString(a)}  ${cardString(b)}`);
 
-  if (bet === 0) {
-    T$.println(`{Y}Chicken!`);
-  } else {
-    T$.println(`\n{_}The next card is: ${cardString(c)}`);
-    if (value(a) < value(c) && value(c) < value(b)) {
-      T$.println(`{G}You win!`);
-      cash += bet;
+    let bet = await T$.inputNumber('How much do you bet? ', 0, cash);
+
+    if (bet === 0) {
+      T$.println(`{Y}Chicken!`);
     } else {
-      T$.println(`{R}Sorry, you lose.`);
-      cash -= bet;
+      T$.println(`\n{_}The next card is: ${cardString(c)}`);
+      if (value(a) < value(c) && value(c) < value(b)) {
+        T$.println(`{G}You win!`);
+        cash += bet;
+      } else {
+        T$.println(`{R}Sorry, you lose.`);
+        cash -= bet;
+      }
     }
-  }
   
-  T$.println(`{_}`);
+    T$.println(`{_}`);
+  }
+
+  T$.println(`{W}You're broke -- get outta here!{_}`);
 }
 
-T$.println(`{W}You're broke -- get outta here!{_}`);
+main();

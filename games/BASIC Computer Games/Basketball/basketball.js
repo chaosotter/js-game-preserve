@@ -313,7 +313,7 @@ function printScore() {
 }
 
 function tick() {
-  time += 1
+  time++;
   time = checkHalftime(time);
   time = checkWarning (time);
   time = checkOvertime(time);
