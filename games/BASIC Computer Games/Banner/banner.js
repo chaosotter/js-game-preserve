@@ -2,7 +2,7 @@ var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Banner';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const CHAR_X = 7;
 const CHAR_Y = 9;
@@ -61,18 +61,18 @@ a tree!)
 `);
 }
 
-function getCharacter() {
+async function getCharacter() {
   const prompt = 'Enter character to use (leave blank for current character): ';
-  let char = T$.input(prompt);
+  let char = await T$.input(prompt);
   if (char.length > 1) {
     char = char[0];
   }
   return char;
 }
 
-function getScale(msg, min, max) {
+async function getScale(msg, min, max) {
   const prompt = `Enter ${msg} scale (${min}-${max}): `;
-  return T$.inputNumber(prompt, min, max);
+  return await T$.inputNumber(prompt, min, max);
 }
 
 function drawCharacter(ch) {
@@ -105,16 +105,22 @@ function findTab() {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+let scaleX, scaleY, centered, char;
 
-let scaleX   = getScale('horizontal', 1, 11);
-let scaleY   = getScale('vertical',   1, 11);
-let centered = T$.inputYN('Center output (y/n)? ');
-let char     = getCharacter();
-let message  = T$.input('Enter message: ').toUpperCase();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-T$.println('{W}');
-for (let ch of message) {
-  drawCharacter(ch);
+  scaleX   = await getScale('horizontal', 1, 11);
+  scaleY   = await getScale('vertical',   1, 11);
+  centered = await T$.inputYN('Center output (y/n)? ');
+  char     = await getCharacter();
+
+  const message = (await T$.input('Enter message: ')).toUpperCase();
+  T$.println('{W}');
+  for (let ch of message) {
+    drawCharacter(ch);
+  }
 }
+
+main();
