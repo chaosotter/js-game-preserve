@@ -22,9 +22,9 @@ can expect as the project evolves:
 
 ## Current status
 
-An adapter for terminal-based games is under construction, including support for
-color and either line or character-based input.  The initial version supports
-only the console-based mode of operation through Node.js.
+There is a functional adapter for terminal-based games, including support for
+color and line-based input.  This adapter supports both the Node.js console mode
+and being embedded in a Web page through a Canvas-based terminal emulator.
 
 The initial games are being drawn from the classic book [BASIC Computer Games,
 Microcomputer Edition](https://en.wikipedia.org/wiki/BASIC_Computer_Games),
