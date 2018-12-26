@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Awari';
-const VERSION = '1.0.1';
+const VERSION = '1.0.2';
 
 const HUMAN    = 0;
 const COMPUTER = 1;
@@ -35,19 +35,19 @@ function computerMove(board) {
  * @param {Board} board The current board state.
  * @returns {number} Which move to take.
  */
-function humanMove(board) {
+async function humanMove(board) {
   if (board.again) {
     T$.println('{W}Second move!');
   }
   let move = 0;
   while (!board.isLegal(move - 1)) {
-    move = T$.inputNumber('Your move (1-6)? ', 1, 6);
+    move = await T$.inputNumber('Your move (1-6)? ', 1, 6);
   }
   return move - 1;
 }
 
 /** Displays instructions. */        
-function instructions() {
+async function instructions() {
   T$.println(`
 Awari is a traditional African game played with 36 stones and 14 pits.  Each
 player has six pits on their side of the board, plus a special 'home' pit that
@@ -64,7 +64,7 @@ pit.
 Whoever has the most stones in their home when there are no moves remaining
 wins.  (Beware, the computer is a tough opponent!)
 `);
-  T$.delay();
+  await T$.delay();
 }
 
 /**
@@ -291,31 +291,35 @@ class Board {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  await instructions();
 
-let done = false;
-while (!done) {
-  let board = new Board();
+  let done = false;
+  while (!done) {
+    let board = new Board();
     
-  while (!board.gameOver()) {
-    if (board.hasMove()) {
-      board.display();
-      board.apply((board.turn == HUMAN) ? humanMove(board) : computerMove(board));
-    } else {
-      board.turn = other(board.turn);
+    while (!board.gameOver()) {
+      if (board.hasMove()) {
+        board.display();
+        board.apply((board.turn == HUMAN) ? await humanMove(board) : computerMove(board));
+      } else {
+        board.turn = other(board.turn);
+      }
     }
-  }
 
-  board.display();
-  T$.println('{W}\nGAME OVER!');
-  if (board.pits[HOME[HUMAN]] > board.pits[HOME[COMPUTER]]) {
-    T$.println('You win!  (By pure luck...)\n');
-  } else if (board.pits[HOME[HUMAN]] < board.pits[HOME[COMPUTER]]) {
-    T$.println(`I win!  (You're only human...)\n`);
-  } else {
-    T$.println('Huh, a tie...\n');
-  }
+    board.display();
+    T$.println('{W}\nGAME OVER!');
+    if (board.pits[HOME[HUMAN]] > board.pits[HOME[COMPUTER]]) {
+      T$.println('You win!  (By pure luck...)\n');
+    } else if (board.pits[HOME[HUMAN]] < board.pits[HOME[COMPUTER]]) {
+      T$.println(`I win!  (You're only human...)\n`);
+    } else {
+      T$.println('Huh, a tie...\n');
+    }
 
-  done = !(T$.inputYN('Another game (y/n)? '));
+    done = !(await T$.inputYN('Another game (y/n)? '));
+  }
 }
+
+main();
