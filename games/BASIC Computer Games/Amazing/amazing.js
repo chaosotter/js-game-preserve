@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Amazing Maze Generator';
-const VERSION = '1.0.2';
+const VERSION = '1.0.3';
 
 const WALL  = 0;
 const SPACE = 1;
@@ -99,9 +99,9 @@ function generateMaze() {
  * @param {number} min The minimum acceptable size.
  * @param {number} max The maximum acceptable size.
  */
-function getSize(msg, min, max) {
+async function getSize(msg, min, max) {
   const prompt = `Enter ${msg} (${min}-${max}): `;
-  return T$.inputNumber(prompt, min, max);
+  return await T$.inputNumber(prompt, min, max);
 }
 
 /** Displays instructions. */
@@ -125,18 +125,23 @@ function printMaze() {
         T$.print(' ');
       }
     }
-    T$.println('{_}');
+    T$.println();
   }
+  T$.println('{_}');
 }
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-cols = getSize('width',  1, 39) * 2 + 1;
-rows = getSize('height', 1, 39) * 2 + 1;
+  cols = await getSize('width',  1, 39) * 2 + 1;
+  rows = await getSize('height', 1, 39) * 2 + 1;
 
-allocateMaze();
-generateMaze();
-printMaze();
+  allocateMaze();
+  generateMaze();
+  printMaze();
+}
+
+main();

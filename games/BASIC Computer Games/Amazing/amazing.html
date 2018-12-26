@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Amazing</title>
+
+    <script src="../../../retro/require.js"></script>
+    <script src="../../../retro/node_modules/google-closure-library/closure/goog/base.js"></script>
+    <script>
+      /* global Tarp */
+      Tarp.require({expose: true});
+      let driver = require('../../../retro/driver.js');
+      function start() {
+        driver.start();
+        require('./amazing.js');
+      }
+    </script>
+  </head>
+
+  <body id="basic" onload="start();" style="margin:0px; padding:0px; border:0px;">
+    <canvas id="terminal" width="640" height="480"/>
+  </body>
+</html>

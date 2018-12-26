@@ -577,9 +577,9 @@ module.exports = {
   },
 
   /** Stops and asks the user to press enter. */
-  delay() {
+  async delay() {
     this.println('{_}\n[Press Enter to continue.]');
-    this.input();
+    await this.input();
   },
 
   /**

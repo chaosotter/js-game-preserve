@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Acey Ducey';
-const VERSION = '1.0.3';
+const VERSION = '1.0.4';
 
 /**
  * Translates a card in the range [0, 51] to a user-readable string.
