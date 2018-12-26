@@ -2,7 +2,7 @@ var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Basketball';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const HOME = 0;
 const AWAY = 1;
@@ -130,17 +130,17 @@ function doFoul(which) {
   }
 }
 
-function getDefense() {
+async function getDefense() {
   T$.println('{W}\nSelect a defense:');
   T$.println('{Y}  (1) {_}Press');
   T$.println('{Y}  (2) {_}Man-to-Man');
   T$.println('{Y}  (3) {_}Zone');
   T$.println('{Y}  (4) {_}None');
   T$.println();
-  return T$.inputNumber('Your choice? ', 1, 4);
+  return await T$.inputNumber('Your choice? ', 1, 4);
 }
 
-function getPlay() {
+async function getPlay() {
   T$.println('{W}\nSelect a play:');
   T$.println(`{Y}  (1) {_}Long Jump Shot (30')`);
   T$.println(`{Y}  (2) {_}Short Jump Shot (15')`);
@@ -148,18 +148,18 @@ function getPlay() {
   T$.println('{Y}  (4) {_}Set Shot');
   T$.println('{Y}  (0) {_}Change Defense');
   T$.println();
-  const result = T$.inputNumber('Your choice? ', 0, 4);
+  const result = await T$.inputNumber('Your choice? ', 0, 4);
   if (result === 0) {
-    defense = getDefense();
+    defense = await getDefense();
     return getPlay();
   }
   T$.println();
   return result;
 }
 
-function getOpponent() {
+async function getOpponent() {
   T$.println();
-  return T$.input('And who will be your opponent today? ');
+  return await T$.input('And who will be your opponent today? ');
 }
 
 function homeJump() {
@@ -250,7 +250,7 @@ function homeLayupBlock() {
   } else {
     T$.println('{B}Charging foul.  IU loses the ball.');
   }
-  return AWAY
+  return AWAY;
 }
 
 function homeLayupFoul() {
@@ -321,33 +321,39 @@ function tick() {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+let defense, opponent, time, score;
 
-let defense  = getDefense();
-let opponent = getOpponent();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-let time  = 0;
-let score = [0, 0];
+  defense  = await getDefense();
+  opponent = await getOpponent();
 
-let ball = jumpBall();
+  time  = 0;
+  score = [0, 0];
 
-while (time < 100) {
-  try {
-    if (ball == HOME) {
-      T$.println('{R}IU has the ball.{_}');
-      const play = getPlay();
-      ball = (play == PLAY_15 || play == PLAY_30) ? homeJump() : homeLayup(play);
-    } else {
-      T$.println(`{B}${opponent} has the ball.{_}`);
-      tick();
-      const play = (2.5 * Math.random()) + 1;
-      ball = (play <= PLAY_30) ? awayJump() : awayLayup(play);
+  let ball = jumpBall();
+
+  while (time < 100) {
+    try {
+      if (ball == HOME) {
+        T$.println('{R}IU has the ball.{_}');
+        const play = await getPlay();
+        ball = (play == PLAY_15 || play == PLAY_30) ? homeJump() : homeLayup(play);
+      } else {
+        T$.println(`{B}${opponent} has the ball.{_}`);
+        tick();
+        const play = (2.5 * Math.random()) + 1;
+        ball = (play <= PLAY_30) ? awayJump() : awayLayup(play);
+      }
+    } catch (err) {
+      ball = jumpBall();
     }
-  } catch (err) {
-    ball = jumpBall();
   }
+
+  T$.println('{W}\n*** GAME OVER ***');
+  printScore();
 }
 
-T$.println('{W}\n*** GAME OVER ***');
-printScore();
+main();
