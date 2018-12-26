@@ -55,6 +55,6 @@ module.exports = {
     let keyboard = new goog.events.KeyHandler(document, false);
     goog.events.listen(keyboard, goog.events.KeyHandler.EventType.KEY, keyPressedCallback);
 
-    window.addEventListener('resize', (e) => { term.screen.resize(e); });
+    window.addEventListener('resize', (e) => { term.resize(e); });
   },
 };
