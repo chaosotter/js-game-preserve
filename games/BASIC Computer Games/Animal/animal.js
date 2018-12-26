@@ -2,7 +2,7 @@ var T$ = require('../../../retro/terminal.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Animal Guessing Game';
-const VERSION = '1.0.2';
+const VERSION = '1.0.3';
 
 /**
  * Asks the current question, also allowing the user to enter "list" for the
@@ -74,11 +74,11 @@ async function newQuestion(old) {
 
 //------------------------------------------------------------------------------
 
+let root = {'q': 'Does it swim?', 'y': {'a': 'fish'}, 'n': {'a': 'bird'}};
+
 async function main() {
   T$.hello(SOURCE, TITLE, VERSION);
   instructions();
-
-  let root = {'q': 'Does it swim?', 'y': {'a': 'fish'}, 'n': {'a': 'bird'}};
 
   while (true) {
     T$.println('{W}Time to think of an animal!');

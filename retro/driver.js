@@ -31,6 +31,18 @@ function keyPressedCallback(event) {
 }
 
 module.exports = {
+  getParam(name) {
+    const vars = decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1));
+    const pairs = vars.split('&');
+    for (let pair of pairs) {
+      const parts = pair.split('=', 2);
+      if (parts[0] === name) {
+        return parts[1];
+      }
+    }
+    return '';
+  },
+  
   start() {
     console.log('Initializing Canvas Terminal.');
     term = T$.canvas();

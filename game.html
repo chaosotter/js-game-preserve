@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    
+    <script src="retro/require.js"></script>
+    <script src="retro/node_modules/google-closure-library/closure/goog/base.js"></script>
+    <script>
+      /* global Tarp */
+      Tarp.require({expose: true});
+      let driver = require('./retro/driver.js');
+      function start() {
+        driver.start();
+        let source = driver.getParam('source');
+        let title = driver.getParam('title');
+        let file = driver.getParam('file');
+        require(`./games/${source}/${title}/${file}.js`);
+      }
+    </script>
+  </head>
+  
+  <body id="basic" onload="start();" style="margin:0px; padding:0px; border:0px;">
+    <canvas id="terminal" width="640" height="480"/>
+  </body>
+</html>

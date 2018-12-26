@@ -4,17 +4,27 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>JS Game Preserve</title>
+    
+    <script>
+      function register(source, title, file) {
+        let url = encodeURI(`game.html?source=${source}&title=${title}&file=${file}`);
+        document.getElementById('game-list').innerHTML += `<li><a href="${url}">${title}</a></li>`;
+      }
+      
+      function createList() {
+        register('BASIC Computer Games', 'Acey Ducey', 'acey-ducey');
+        register('BASIC Computer Games', 'Amazing', 'amazing');
+        register('BASIC Computer Games', 'Animal', 'animal');
+      }
+    </script>
   </head>
-  <body>
+
+  <body onload="createList();">
     <h1>JS Game Preserve</h1>
     <p>
-      This is a dumb index page, serving as a manually-curated catalog until I
-      can rig up something more nifty.
+      This is a semi-dumb index page, serving as a manually-curated catalog
+      until I can rig up something more nifty.
     </p>
-    <ul>
-      <li><a href="games/BASIC Computer Games/Acey Ducey/acey-ducey.html">Acey Ducey</a></li>
-      <li><a href="games/BASIC Computer Games/Amazing/amazing.html">Amazing</a></li>
-      <li><a href="games/BASIC Computer Games/Animal/animal.html">Animal Guessing Game</a></li>
-    </ul>
+    <ul id="game-list"></ul>
   </body>
 </html>
