@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Bagels';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 /**
  * Checks for the "bagels" condition.
@@ -101,31 +101,35 @@ function validGuess(guess) {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-const prompt = `{W}What's your guess? `;
+  const prompt = `{W}What's your guess? `;
 
-let done = false;
-while (!done) {
-  let number   = pickNumber();
-  let guessNum = 0;
-  let guess    = 0;
+  let done = false;
+  while (!done) {
+    let number   = pickNumber();
+    let guessNum = 0;
+    let guess    = 0;
 
-  while (guess != number) {
-    guessNum++;
-    T$.println(`{C}This is guess #${guessNum}`);
+    while (guess != number) {
+      guessNum++;
+      T$.println(`{C}This is guess #${guessNum}`);
 
-    do {
-      guess = String(T$.inputNumber(prompt, 100, 999));
-    } while (!validGuess(guess));
+      do {
+        guess = String(await T$.inputNumber(prompt, 100, 999));
+      } while (!validGuess(guess));
 
-    if (number != guess) {
-      evaluate(number, guess);
+      if (number != guess) {
+        evaluate(number, guess);
+      }
     }
-  }
 
-  T$.println(`{M}\nYES!  You got it in ${guessNum} guesses!\n`);
-  done = !(T$.inputYN('Another round (y/n)? '));
-  T$.println();
+    T$.println(`{M}\nYES!  You got it in ${guessNum} guesses!\n`);
+    done = !(await T$.inputYN('Another round (y/n)? '));
+    T$.println();
+  }
 }
+
+main();
