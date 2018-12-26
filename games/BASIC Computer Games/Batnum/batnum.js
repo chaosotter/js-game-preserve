@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Batnum';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const HUMAN    = 0;
 const COMPUTER = 1;
@@ -43,42 +43,48 @@ function printCount(count) {
 
 //------------------------------------------------------------------------------
 
-T$.hello(SOURCE, TITLE, VERSION);
-instructions();
+let count, lastWin, minTake, maxTake;
 
-const count   = T$.inputNumber('How many objects in the pile (1-100)? ', 1, 100);
-const lastWin = T$.inputYN    ('Win by taking the last object (y/n)? ');
+async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
 
-const minTake = T$.inputNumber(`Minimum number to take (1-${count})? `, 1, count);
-const maxTake = T$.inputNumber(`Maximum number to take (${minTake}-${count})? `, minTake, count);
+  count   = await T$.inputNumber('How many objects in the pile (1-100)? ', 1, 100);
+  lastWin = await T$.inputYN    ('Win by taking the last object (y/n)? ');
 
-let turn = T$.inputYN('Want to go first (y/n)? ') ? COMPUTER : HUMAN;
+  minTake = await T$.inputNumber(`Minimum number to take (1-${count})? `, 1, count);
+  maxTake = await T$.inputNumber(`Maximum number to take (${minTake}-${count})? `, minTake, count);
 
-let done = false;
-while (!done) {
-  let current = count;
-  while (current > 0) {
-    turn = other(turn);
+  let turn = await T$.inputYN('Want to go first (y/n)? ') ? COMPUTER : HUMAN;
 
-    let a = Math.min(current, minTake);
-    let b = Math.min(current, maxTake);
-    printCount(current);
+  let done = false;
+  while (!done) {
+    let current = count;
+    while (current > 0) {
+      turn = other(turn);
 
-    if (turn === HUMAN) {
-      current -= T$.inputNumber(`How many do you take (${a}-${b})? `, a, b);
-    } else {
-      const take = computerMove(current, a, b);
-      T$.println(`The computer takes {G}${take}{_}.`);
-      current -= take;
+      let a = Math.min(current, minTake);
+      let b = Math.min(current, maxTake);
+      printCount(current);
+
+      if (turn === HUMAN) {
+        current -= await T$.inputNumber(`How many do you take (${a}-${b})? `, a, b);
+      } else {
+        const take = computerMove(current, a, b);
+        T$.println(`The computer takes {G}${take}{_}.`);
+        current -= take;
+      }
     }
-  }
 
-  if (((turn == HUMAN) && lastWin) || ((turn == COMPUTER) && !lastWin)) {
-    T$.println('{G}\nYou won!\n');
-  } else {
-    T$.println('{R}\nThe computer wins!\n');
-  }
+    if (((turn == HUMAN) && lastWin) || ((turn == COMPUTER) && !lastWin)) {
+      T$.println('{G}\nYou won!\n');
+    } else {
+      T$.println('{R}\nThe computer wins!\n');
+    }
 
-  done = !(T$.inputYN(`Play again (y/n)? `));
-  T$.println();
+    done = !(await T$.inputYN(`Play again (y/n)? `));
+    T$.println();
+  }
 }
+
+main();
