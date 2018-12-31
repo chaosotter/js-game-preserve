@@ -20,6 +20,18 @@ module.exports = {
   },
 
   /**
+   * Left-justifies a string in the given number of columns.
+   * @param {string} str The string.
+   * @param {number} cols The number of columns.
+   * @returns {string} The justified string.
+   */
+  ljustify(str, cols) {
+    let ret = String(str);
+    while (ret.length < cols) ret += ' ';
+    return ret;
+  },
+
+  /**
    * Applies |fn| to every element of the array |ls|.
    * @param {function} fn The mapping function.
    * @param {Array} ls The array to map over.
@@ -79,7 +91,19 @@ module.exports = {
      }
      return acc;
    },
-  
+   
+  /**
+   * Right-justifies a string in the given number of columns.
+   * @param {string} str The string.
+   * @param {number} cols The number of columns.
+   * @returns {string} The justified string.
+   */
+  rjustify(str, cols) {
+    let ret = str;
+    while (ret.length < cols) ret = ' ' + ret;
+    return ret;
+  },
+
   /**
    * Returns the sum of all items in the array.
    * @param {Array.<number>} The array to sum.
