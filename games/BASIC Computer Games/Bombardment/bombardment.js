@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Bombardment';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 function instructions() {
   T$.println(`
@@ -20,6 +20,9 @@ Good luck... and tell us where you want the bodies sent!
 }
 
 async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
+
   let computer;
   do {
     computer = new Set();
