@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Bombs Away';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 function instructions() {
     T$.println(`
@@ -14,6 +14,9 @@ You are a pilot in a World War II Bomber.
 //------------------------------------------------------------------------------
 
 async function main() {
+  T$.hello(SOURCE, TITLE, VERSION);
+  instructions();
+  
   let done = false;
   while (!done) {
     let odds = null;
