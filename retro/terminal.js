@@ -156,6 +156,15 @@ class ConsoleTerm {
     this.output(prompt);
     return readline.question('');
   }
+
+  /**
+   * Moves the cursor ahead to column |n|.  This currently does not wrap if
+   * necessary, which could bork some programs.
+   * @param {number} n The tab column.
+   */
+  tab(n) {
+    this.output(`${CSI}${n}G`);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -499,6 +508,19 @@ class CanvasTerm {
     this.cursorCol = this.cursorRow = 0;
     this.resize();
   }
+  
+  /**
+   * Moves the cursor ahead to column |n|, wrapping if necessary.
+   * @param {number} n The tab column.
+   */
+  tab(n) {
+    if (this.cursorCol > n) {
+      this.newline_();
+    }
+    while (this.cursorCol < Math.min(this.cols, n)) {
+      this.output(' ');
+    }
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -574,6 +596,15 @@ module.exports = {
   println(...strs) {
     this.print.apply(null, strs);
     term.output('\n');
+  },
+  
+  /**
+   * Advances to horizontal cursor position |n| (0-based).  If the cursor
+   * position is already past this point, wraps to the next line.
+   * @param {number} n The tab column.
+   */
+  tab(n) {
+    term.tab(n);
   },
 
   /** Stops and asks the user to press enter. */
