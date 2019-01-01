@@ -26,6 +26,9 @@ There is a functional adapter for terminal-based games, including support for
 color and line-based input.  This adapter supports both the Node.js console mode
 and being embedded in a Web page through a Canvas-based terminal emulator.
 
+Note that the terminal driver **requires Node.js version 7 or later** due to the
+use of `async` and `await`.
+
 The initial games are being drawn from the classic book [BASIC Computer Games,
 Microcomputer Edition](https://en.wikipedia.org/wiki/BASIC_Computer_Games),
 edited by David H. Ahl.
