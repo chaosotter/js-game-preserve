@@ -3,7 +3,7 @@ var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
 const TITLE   = 'Blackjack';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 function instructions() {
   T$.println(`
@@ -63,11 +63,7 @@ class Deck {
   
   shuffle() {
     T$.println('{C}Shuffling the deck...{_}');
-    for (let i = 0; i < this.cards.length; i++) {
-      const a = U$.rand(0, i);
-      const b = U$.rand(0, this.cards.length-1);
-      [this.cards[a], this.cards[b]] = [this.cards[b], this.cards[a]];
-    }
+    U$.shuffle(this.cards);
     this.next = 0;
   }
 }

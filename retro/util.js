@@ -103,6 +103,17 @@ module.exports = {
     while (ret.length < cols) ret = ' ' + ret;
     return ret;
   },
+  
+  /**
+   * Randomly permutes the entries of the given array a la Fisher-Yates.
+   * @param {Array.<object>} arr The array.
+   */
+  shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = module.exports.rand(0, i);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  },
 
   /**
    * Returns the sum of all items in the array.
