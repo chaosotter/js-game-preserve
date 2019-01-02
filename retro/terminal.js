@@ -194,7 +194,7 @@ const CHAR_SIZE = 16;
 const HALF_SIZE = 8;
 
 /** @type {string} Default display font. */
-const FONT = 'bold 16px courier';
+const FONT = 'bold 20px courier';
 
 /** @type {number} Blink rate for the cursor. */
 const BLINK_RATE = 8;
@@ -410,7 +410,7 @@ class CanvasTerm {
   outputChar_(ch) {
     this.screen[this.cursorRow][this.cursorCol].update(ch, this.colorFg, this.colorBg);
     if (++this.cursorCol >= this.cols) {
-      this.newline();
+      this.newline_();
     }
   }
   
@@ -666,8 +666,8 @@ module.exports = {
    * Substitutes CanvasTerm for the default ConsoleTerm and returns it to the
    * driver code.
    */
-  canvas() {
-    term = new CanvasTerm(80, 25);
+  canvas(cols=80, rows=25) {
+    term = new CanvasTerm(cols, rows);
     return term;
   },
 };
