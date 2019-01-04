@@ -1,9 +1,8 @@
 var T$ = require('../../../retro/terminal.js');
-var U$ = require('../../../retro/util.js');
 
 const SOURCE  = 'BASIC Computer Games';
-const TITLE   = 'Amazing Maze Generator';
-const VERSION = '1.0.4';
+const TITLE   = 'Bunny';
+const VERSION = '1.0.1';
 
 const CHARS = [2, 21, 14, 14, 25];
 
