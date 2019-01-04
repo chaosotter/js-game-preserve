@@ -65,6 +65,15 @@ module.exports = {
   },
   
   /**
+   * Selects a random item from the given array.
+   * @param {Array.<object>} arr The array.
+   * @returns {object}
+   */
+  randItem(arr) {
+    return arr[module.exports.rand(0, arr.length - 1)];
+  },
+  
+  /**
    * Builds a list of integers in the range [a, b] inclusive.
    * @param {number} a The minimum value.
    * @param {number} b The maximum value.
