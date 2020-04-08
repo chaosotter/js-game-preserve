@@ -11,7 +11,7 @@ module.exports = {
    */
   filter(pred, ls) {
     let ret = [];
-    for (x of ls) {
+    for (let x of ls) {
       if (pred(x)) {
         ret.push(x);
       }
@@ -39,7 +39,7 @@ module.exports = {
    */
   map(fn, ls) {
     let ret = [];
-    for (x of ls) {
+    for (let x of ls) {
       ret.push(fn(x));
     }
     return ret;
