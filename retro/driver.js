@@ -45,7 +45,7 @@ module.exports = {
   
   start() {
     console.log('Initializing Canvas Terminal.');
-    term = T$.canvas(132, 43);
+    term = T$.canvas(132, 50);
     
     let redrawCallback = () => { term.draw(); };
     let redrawTimer = new goog.Timer(16);
