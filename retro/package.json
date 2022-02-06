@@ -9,7 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "readline-sync": "^1.4.9",
-    "google-closure-library": "^20180910.0.0"
+    "google-closure-library": "^20200830.0.0"
   },
   "devDependencies": {},
   "description": ""
